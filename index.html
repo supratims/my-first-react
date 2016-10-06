@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+  <title>My Twitter Stream</title>
+  <script src="https://fb.me/react-15.1.0.js"></script>
+  <script src="https://fb.me/react-dom-15.1.0.js"></script>
+  <script src="https://unpkg.com/jquery@3.1.0/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <style>
+    html,body {
+		font-family: sans-serif;
+    }
+    .container {
+      padding: 50px;
+    }
+    .container h1 {
+      color: #0080a8;      
+    }
+    .media {
+    	width: 320px;
+    	float: left;
+    	min-height: 60px;
+    	border-bottom: 1px dashed dimgrey;
+    	padding: 10px 5px;
+    }
+    .media h2 {
+    	font-size: 14px;
+    }
+    .media h4 {
+    	font-size: 12px; font-style: italic;
+    }
+  </style>
+</head>
+ 
+<body>
+	<div class="section main">
+		
+	</div>
+	<script type="text/babel">
+	  var mainSection = document.querySelector(".section.main");
+
+	  class Media extends React.Component {
+	    constructor(props) {
+		    super(props);		    
+  		}
+		render() {
+		    return <div className="media">
+		    	<h2>	{this.props.text} </h2>
+		    	<h4> -- by {this.props.author} </h4>
+		    </div>;
+		}
+	  };
+
+	  class Tweets extends React.Component {
+	    constructor(props) {
+		    super(props);		    
+  		}
+		render() {
+		    var tweets = this.props.data.map(function(tweet) {
+		      return (
+		        <Media author={tweet.author} text={tweet.text}>		          
+		        </Media>
+		      );
+	    	
+	    	});
+	    	return <div className="container">{tweets}</div>;	    	
+		}
+	  }
+
+	  class TweetBox extends React.Component {
+		  constructor(props) {
+		    super(props);	
+		    this.state = {
+		    	data: [], batchSize: 20
+		    };	    
+		    this.localData();
+		    setInterval(this.localData, this.props.pollInterval);
+	  	  }
+		  /*
+		  fetchTweets() {
+		    $.ajax({
+		      url: 'https://stream.twitter.com/1.1/statuses/sample.json',
+		      dataType: 'json',
+		      cache: false,
+		      success: function(data) {
+		        this.setState({data: data});
+		      },
+		      error: function(xhr, status, err) {
+		        console.error(xhr, status, err.toString());
+		      }
+		    });
+		  }
+		  */
+		  localData(){
+		  	this.setState({data: [{id: 'x', author: "Pete Hunt", text: "This is one tweet"},]});
+		  } 
+	  
+		  render() {
+		    return (
+		      <div>		        
+		        <Tweets data={this.state.data}/>
+		      </div>
+		    );
+		  }  
+	  }
+
+	  var data = [
+  		{id: 1, author: "Pete Hunt", text: "This is one tweet"},
+  		{id: 2, author: "Jordan Walke", text: "This is *another* tweet"}
+	  ];
+
+	  ReactDOM.render(
+	    <TweetBox pollInterval={2000}/>,
+	    mainSection
+	  );
+
+
+	</script>
+</body>
+ 
+</html>
