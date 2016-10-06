@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html>
- 
+
 <head>
   <title>My Twitter Stream</title>
   <script src="https://fb.me/react-15.1.0.js"></script>
   <script src="https://fb.me/react-dom-15.1.0.js"></script>
   <script src="https://unpkg.com/jquery@3.1.0/dist/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <script src="main.js"></script>
   <style>
     html,body {
 		font-family: sans-serif;
     }
     .container {
-      padding: 50px;
+      padding: 50px; max-width: 320px;
     }
     .container h1 {
-      color: #0080a8;      
+      color: #0080a8;
     }
     .media {
     	width: 320px;
@@ -32,51 +33,53 @@
     }
   </style>
 </head>
- 
+
 <body>
 	<div class="section main">
-		
+
 	</div>
 	<script type="text/babel">
 	  var mainSection = document.querySelector(".section.main");
 
 	  class Media extends React.Component {
 	    constructor(props) {
-		    super(props);		    
+		    super(props);
   		}
-		render() {
-		    return <div className="media">
-		    	<h2>	{this.props.text} </h2>
-		    	<h4> -- by {this.props.author} </h4>
-		    </div>;
-		}
+  		render() {
+  		    return <div className="media">
+  		    	<h2>	{this.props.text} </h2>
+  		    	<h4> -- by {this.props.author} </h4>
+  		    </div>;
+  		}
 	  };
 
 	  class Tweets extends React.Component {
 	    constructor(props) {
-		    super(props);		    
+		    super(props);
   		}
-		render() {
-		    var tweets = this.props.data.map(function(tweet) {
-		      return (
-		        <Media author={tweet.author} text={tweet.text}>		          
-		        </Media>
-		      );
-	    	
-	    	});
-	    	return <div className="container">{tweets}</div>;	    	
-		}
+  		render() {
+  		    var tweets = this.props.data.map(function(tweet) {
+  		      return (
+  		        <Media author={tweet.author} text={tweet.text}>
+  		        </Media>
+  		      );
+
+  	    	});
+  	    	return <div className="container">{tweets}</div>;
+  		}
 	  }
 
 	  class TweetBox extends React.Component {
 		  constructor(props) {
-		    super(props);	
+		    super(props);
+        var data = [
+          {id: 1, author: "Pete Hunt", text: "This is one tweet"},
+          {id: 2, author: "Jordan Walke", text: "This is *another* tweet"}
+        ];
 		    this.state = {
-		    	data: [], batchSize: 20
-		    };	    
-		    this.localData();
-		    setInterval(this.localData, this.props.pollInterval);
-	  	  }
+		    	data: data, batchSize: 20
+		    };
+	  	}
 		  /*
 		  fetchTweets() {
 		    $.ajax({
@@ -92,17 +95,14 @@
 		    });
 		  }
 		  */
-		  localData(){
-		  	this.setState({data: [{id: 'x', author: "Pete Hunt", text: "This is one tweet"},]});
-		  } 
-	  
+
 		  render() {
 		    return (
-		      <div>		        
+		      <div>
 		        <Tweets data={this.state.data}/>
 		      </div>
 		    );
-		  }  
+		  }
 	  }
 
 	  var data = [
@@ -115,8 +115,7 @@
 	    mainSection
 	  );
 
-
 	</script>
 </body>
- 
+
 </html>
